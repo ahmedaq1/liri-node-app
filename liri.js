@@ -36,18 +36,21 @@ switch (command) {
 
 
 function concert(value) {
+    // console.log("value", value)
     axios.get("https://rest.bandsintown.com/artists/" + value + "/events?app_id=codingbootcamp")
         .then(function(response) {
+            // console.log("response.data", response.data)
             for (var i = 0; i < response.data.length; i++) {
 
                 var datetime = response.data[i].datetime;
-                var dateArr = datetime.split(', ');
+                var dateArr = moment(datetime).format('LLL');
 
                 var concertResults =
                     "--------------------------------------------------------------------" +
                     "\nVenue : " + response.data[i].venue.name +
                     "\nLocation: " + response.data[i].venue.city +
-                    "\nTime: " + moment(dateArr[0], "MM-DD-YYYY");
+                    "\nTime: " + dateArr;
+
                 console.log(concertResults);
             }
         })
@@ -59,6 +62,7 @@ function concert(value) {
 }
 
 function spotifyMusic(value) {
+    console.log(value)
     if (!value) {
         value = "The Sign";
     }
@@ -112,6 +116,7 @@ function doIt() {
             return console.log(error);
         }
         var dataArr = data.split(',');
-        spotify(dataArr[0], dataArr[1]);
+        console.log(dataArr);
+        spotifyMusic(dataArr[1]);
     })
 }
